@@ -4,6 +4,8 @@ requests
 feedparser
 celery
 pymorphy2
+pymorphy2-dicts
 cqlengine
 numpy
 scikit-learn
+django_extensions

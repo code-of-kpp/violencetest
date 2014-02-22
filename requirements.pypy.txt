@@ -1,0 +1,1 @@
+DAWG-Python>=0.7
