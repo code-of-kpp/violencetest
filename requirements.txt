@@ -1,0 +1,8 @@
+django
+requests
+feedparser
+celery
+pymorphy2
+cqlengine
+numpy
+scikit-learn
