@@ -1,0 +1,6 @@
+deployment:
+  development:
+    branch:
+      - master
+    commands:
+      - ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "cd ${DEPLOY_PATH} && git pull"

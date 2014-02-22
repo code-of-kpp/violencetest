@@ -1,8 +1,11 @@
+six
 django
 south
 requests
 feedparser
 celery
+beautifulsoup4
+nltk
 pymorphy2
 pymorphy2-dicts
 cqlengine

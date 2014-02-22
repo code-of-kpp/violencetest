@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'south',
     'stopviolence',
     'django_extensions',
+    'cqlwrapper',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,6 +86,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+CASSANDRA = {
+    'hosts': ('127.0.0.1', )
+}
 
 try:
     from .local import *
