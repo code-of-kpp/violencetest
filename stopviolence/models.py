@@ -16,7 +16,7 @@ class Theme(models.Model):
 class ViolentPhoto(models.Model):
     theme = models.ForeignKey(Theme)
     short_name = models.CharField(max_length=200)
-    phnto_link = models.URLField()
+    phnto_link = models.URLField(unique=True)
     news_link = models.URLField()
     violent_level = models.FloatField()
 
@@ -25,7 +25,7 @@ class ViolentPhoto(models.Model):
 
 
 class City(models.Model):
-    name = models.TextField()
+    name = models.TextField(unique=True)
     population = models.IntegerField()
 
     class Meta:
