@@ -12,10 +12,10 @@ def result(request, theme):
     data = {}
 
     for obj in vp:
-        if obj.violent_level in data:
-             data[obj.violent_level].append(obj)
+        if int(obj.violent_level) in data:
+             data[int(obj.violent_level)].append(obj)
         else:
-             data[obj.violent_level] = list()
+             data[int(obj.violent_level)] = list()
 
     return render_to_response('result.html', {'photos': data})
 
