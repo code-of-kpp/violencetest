@@ -13,7 +13,7 @@ def result(request, theme):
 
     for obj in vp:
         if int(obj.violent_level) in data:
-             data[int(obj.violent_level)].append(obj)
+             data[int(obj.violent_level)].append((obj.news_link, obj.photo_link))
         else:
              data[int(obj.violent_level)] = list()
 
