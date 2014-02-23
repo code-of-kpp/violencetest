@@ -11,7 +11,7 @@ def result(request, theme):
 
     data = {}
 
-    for obj in data:
+    for obj in vp:
         if obj.violent_level in data:
              data[obj.violent_level].append(obj)
         else:
