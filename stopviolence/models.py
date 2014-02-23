@@ -128,15 +128,15 @@ def add_ngram(terms, dataset_id):
 
 def get_train_data():
     rows = PoliceReport.objects.count()
-    cols = Ngram.objects.last().pk
+    cols = Ngram.objects.last().pk + 1
 
-    data = sparce.dok_matrix((rows, cols))
+    data = sparse.dok_matrix((rows, cols))
 
     all_ngram_counters = NgramCounters.objects.filter(class_=0)
 
     levels = list()
 
-    for row, pr in enumerated(PoliceReport.objects):
+    for row, pr in enumerate(PoliceReport.objects.all()):
         g = NgramCounters.objects.filter(class_=pr.pk).all()
         for nc in g:
             data[(row, nc.ngram)] = float(nc.value) / all_ngram_counters.get(ngram=nc.ngram).value
