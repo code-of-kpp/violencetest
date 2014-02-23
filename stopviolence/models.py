@@ -2,6 +2,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+from cqlwrapper import cqlmodels
+
+
 class Theme(models.Model):
     short_name = models.CharField(max_length=200)
     name = models.TextField()
@@ -77,3 +80,18 @@ class BlogEntry(models.Model):
 class UserResult(models.Model):
     link = models.URLField()
     level = models.FloatField()
+
+
+class Ngram(models.Model):
+    string = models.TextField(db_index=True)
+
+
+class ClassCounters(cqlmodels.Model):
+    class_ = cqlmodels.Integer(primary_key=True)  # 0 for all
+    value = cqlmodels.Counter()
+
+
+class NgramCounters(cqlmodels.Model):
+    class_ = cqlmodels.Integer(primary_key=True)  # 0 for all
+    ngram = cqlmodels.Integer(primary_key=True)
+    value = cqlmodels.Counter()
