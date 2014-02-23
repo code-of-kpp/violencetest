@@ -25,7 +25,7 @@ class ViolentPhoto(models.Model):
     violent_level = models.FloatField()
 
     def __unicode__(self):
-        return self.short_name
+        return u'{} ({})'.format(self.short_name, self.violent_level)
 
 
 class City(models.Model):
