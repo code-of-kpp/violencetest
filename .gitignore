@@ -1,5 +1,4 @@
 venv
 *.py[co]
-static
 data
 *.bak

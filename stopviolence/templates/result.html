@@ -1,5 +1,7 @@
-<html>
-{% for k,v in photos %}
+{% extends "base.html" %}
+
+{% block content %}
+{% for k,v in photos.items %}
 <div>
 {{k}}
 {% for obj in v %}
@@ -7,4 +9,4 @@
 {% endfor %}
 </div>
 {% endfor %}
-</html>
+{% endblock content %}
