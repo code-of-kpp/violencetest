@@ -9,7 +9,15 @@ def result(request, theme):
 
     vp = ViolentPhoto.objects.filter(theme=theme).all()
 
-    return render_to_response('result.html', {'photos': vp})
+    data = {}
+
+    for obj in data:
+        if obj.violent_level in data:
+             data[obj.violent_level].append(obj)
+        else:
+             data[obj.violent_level] = list()
+
+    return render_to_response('result.html', {'photos': data})
 
 
 def index(request, theme):
