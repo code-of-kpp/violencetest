@@ -92,6 +92,17 @@ CASSANDRA = {
     },
 }
 
+
+CELERY = {
+    'default': None,
+}
+
+CELERY_CURRENT = 'default'
+
+DEFAULT_TASK_RETRY_DELAY = 180
+DEFAULT_TASK_MAX_RETRIES = 3
+
+
 try:
     from .local import *
 except ImportError:

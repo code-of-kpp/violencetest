@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from scipy import sparse
 
 from cqlwrapper import cqlmodels
 
@@ -46,7 +47,7 @@ class PoliceReport(models.Model):
     crimes_count = models.IntegerField()
 
     def __unicode__(self):
-        return '{} crimes at {}'.format(self.crimes, self.city.name)
+        return u'{} crimes at {}'.format(self.crimes_count, self.city.name)
 
 
 class BlogsData(models.Model):
@@ -65,6 +66,7 @@ class BlogsData(models.Model):
 class BlogEntry(models.Model):
     text = models.TextField()
     dataset = models.ForeignKey(BlogsData)
+    raw = models.TextField(null=True)
 
     class Meta:
         verbose_name = _("Blog entry")
@@ -95,3 +97,49 @@ class NgramCounters(cqlmodels.Model):
     class_ = cqlmodels.Integer(primary_key=True)  # 0 for all
     ngram = cqlmodels.Integer(primary_key=True)
     value = cqlmodels.Counter()
+
+
+def add_ngram(terms, dataset_id):
+    string = ' '.join(terms)
+    ngram, _ = Ngram.objects.get_or_create(string=string)
+
+    cc = ClassCounters()
+    cc.class_ = dataset_id
+    cc.value = 1
+    cc.save()
+
+    cc0 = ClassCounters()
+    cc0.class_ = 0
+    cc0.value = 1
+    cc0.save()
+
+    nc = NgramCounters()
+    nc.class_ = dataset_id
+    nc.ngram = ngram.pk
+    nc.value = 1
+    nc.save()
+
+    nc0 = NgramCounters()
+    nc0.class_ = 0
+    nc0.ngram = ngram.pk
+    nc0.value = 1
+    nc0.save()
+
+
+def get_train_data():
+    rows = PoliceReport.objects.count()
+    cols = Ngram.objects.last().pk
+
+    data = sparce.dok_matrix((rows, cols))
+
+    all_ngram_counters = NgramCounters.objects.filter(class_=0)
+
+    levels = list()
+
+    for row, pr in enumerated(PoliceReport.objects):
+        g = NgramCounters.objects.filter(class_=pr.pk).all()
+        for nc in g:
+            data[(row, nc.ngram)] = float(nc.value) / all_ngram_counters.get(ngram=nc.ngram).value
+        levels.append(float(pr.crimes_count) / pr.city.population)
+
+    return data, levels

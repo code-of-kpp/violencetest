@@ -6,7 +6,7 @@ import logging
 from .models import BlogsData, BlogEntry
 
 
-logger = logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def process_police_report(report):
@@ -15,10 +15,16 @@ def process_police_report(report):
     finished = False
     page = None
 
-    blogs_data = BlogsData(city=report.city,
+    blogs_data = BlogsData(pk=report.pk,
+                           city=report.city,
                            start_date=report.start_date,
                            end_date=report.end_date)
     blogs_data.save()
+
+    try:
+        BlogEntry.objects.filter(dataset=blogs_data.pk).delete()
+    except BlogEntry.DoesNotExist:
+        pass
 
     while not finished:
         response = requests.get('http://blogs.yandex.ru/search.rss',
@@ -38,11 +44,13 @@ def process_police_report(report):
             text = post.description if (post.title in post.description) else (post.title + post.description)
 
             blog_entry = BlogEntry(dataset_id=blogs_data.pk,
-                                   text=text)
+                                   text=text, raw=repr(post))
             blog_entry.save()
 
         processed += len(posts.entries)
 
         finished = (len(posts.entries) == 0) or (posts.feed.yablogs_count <= processed)
         page = page + 1 if page else 2
-        logger.debug(page, processed, posts.feed.yablogs_count)
+        logger.debug(page, processed, getattr(posts.feed, 'yablogs_count', None))
+
+    return blogs_data
