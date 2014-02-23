@@ -13,9 +13,9 @@ def result(request, theme):
 
     for obj in vp:
         if int(obj.violent_level) in data:
-             data[int(obj.violent_level)].append((obj.news_link, obj.photo_link))
+             data[int(obj.violent_level)].append((obj.news_link, obj.phnto_link))
         else:
-             data[int(obj.violent_level)] = list()
+             data[int(obj.violent_level)] = [(obj.news_link, obj.phnto_link)]
 
     return render_to_response('result.html', {'photos': data})
 
