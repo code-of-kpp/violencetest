@@ -12,13 +12,14 @@
   <!--[if lt IE 9]>
   <![endif]-->
  </head>
- <body class="{% block body-class %}{% endblock body-class %}">
+ <body>
   {% block wrapper %}
   {% block content-wrapper %}
-  <div class="{% block content-container-class %}container{% endblock content-container-class %}">
+  <div class="container-fluid">
       {% block content-block %}
-      <div class="{% block content-block-class %}block{% endblock content-block-class %}">
-          <div class="block_content">
+      <div class="row-fluid">
+          <div class="span3"></div>
+          <div class="span9">
            {% block content %}{% endblock content %}
            </div>
       </div>

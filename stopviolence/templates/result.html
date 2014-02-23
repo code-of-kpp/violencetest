@@ -2,10 +2,10 @@
 
 {% block content %}
 {% for k,v in photos.items %}
-<div>
+<div class="row-fluid">
 {{k}}
 {% for obj in v %}
-<span><a href="{{obj.1}}"><img src="{{obj.2}}" /></a></span>
+<span class="span2"><a href="{{obj.0}}"><img src="{{obj.1}}" /></a></span>
 {% endfor %}
 </div>
 {% endfor %}
