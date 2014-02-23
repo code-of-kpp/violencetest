@@ -44,13 +44,13 @@ def process_police_report(report):
             text = post.description if (post.title in post.description) else (post.title + post.description)
 
             blog_entry = BlogEntry(dataset_id=blogs_data.pk,
-                                   text=text, raw=repr(post))
+                                   text=text, raw=unicode(post))
             blog_entry.save()
 
         processed += len(posts.entries)
 
         finished = (len(posts.entries) == 0) or (posts.feed.yablogs_count <= processed)
-        page = page + 1 if page else 2
-        logger.debug(page, processed, getattr(posts.feed, 'yablogs_count', None))
+        page = page + 1 if page else 1
+        logger.debug(page, processed, getattr(posts.feed, 'yablogs_count', ''))
 
     return blogs_data

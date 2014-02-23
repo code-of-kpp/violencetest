@@ -140,6 +140,6 @@ def get_train_data():
         g = NgramCounters.objects.filter(class_=pr.pk).all()
         for nc in g:
             data[(row, nc.ngram)] = float(nc.value) / all_ngram_counters.get(ngram=nc.ngram).value
-        levels.append(float(pr.crimes_count) / pr.city.population)
+        levels.append(float(pr.crimes_count) / pr.city.population / (pr.end_date - pr.start_date).days)
 
     return data, levels
